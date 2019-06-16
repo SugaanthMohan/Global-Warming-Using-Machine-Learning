@@ -20,24 +20,48 @@ Modules Used:
     
 """
 
-# ADD THE MODULES HERE
+# >>>>>>> ADD YOUR MODULES HERE
+#### USED TO HANDLE THE JSON TYPE DATA
 import json
+
+#### USED FOR THE NUMPY ARRAY OPERATIONS
 import numpy as np
+
+#### USED FOR PLOTTING THE OBSERVATIONS INTO A GRAPH
 import matplotlib.pyplot as plt
+
+#### USED FOR DATAFRAMES CREATION AND HANDLING
 import pandas as pd
+
+#### USED FOR CREATING A TIME SERIES ON THE DATES
 from datetime import datetime
+
 
 
 def GetDataSource(*Retain_items):
     
+    '''
+    
+    USED TO EXTRACT THE ITEMS FROM JSON FILE AND CREATE A DATAFRAME WITH THE DATASET
+    
+    ARGUMENTS :
+        
+        Retain_items -> used to retain the column names you set to retain before returning,
+        
+            constraint -> The headers must be an exact match, Otherwise brace yourselves for 
+            errors
+        
+    '''    
     
     
-    Source_Directory    = "/Users/Deepak/suganths_terminal/Weatheria/"
+    Source_Directory    = "/Users/Deepak/suganths_terminal/Suganth's Git/GlobalWarming"
     Source_File         = "Json_Monthly_Seasonal_Annual.json"
     Retain_items        = list(Retain_items)
     
+    # CREATE A FILE HANDLE
     with open( Source_Directory + Source_File ) as readFileHandle:
         
+        # READ THE RAW DATA AND LOAD IT WITH JSON MODULE
         raw_data = json.load(readFileHandle)
         
         # AS PER OUR REQUIREMENT WE WILL ONLY TAKE FROM YEAR TO ALL THE MONTHS
@@ -73,7 +97,21 @@ def GetDataSource(*Retain_items):
 
 
 def ConvertMonthType(Month_):
+    '''
     
+    CovertMonthType ->  Is used to Convert the Month name into number format for creating
+                        the time series.
+                        
+        arguments  : Month_
+                It is used to get the month name in `String' and return the corresponding number of the
+                month
+        
+        constraint :
+                Cannot handle any other format otherthan specified below
+                
+                
+    
+    '''
     # CREATE CUSTOM MONTH CONVERSION
     my_month_list = {
                      
@@ -96,7 +134,22 @@ def ConvertMonthType(Month_):
 
             
 def CreateLinearDataset(Dataset_):
-
+    '''
+    
+    CreateLinearDataset ->  is used to convert the multi field columns of months and year into
+                            a linear dataset of each month along with the date
+                            
+        arguments : 
+            Dataset_ -> It is the pandas dataframe dataset which we are going to convert into
+                        a linear dataset form.
+                        
+                constraint : The function is written to handle a pandas dataframe dataset with
+                             the matching formats, cannot handle other formats.
+        
+        returns   :     Returns the mutli-dimesional matrix with features in the form of a
+                        ` Date ' and ` Celcius ' format.
+    
+    '''
     # CREATE A NEW DATAFRAME DATASTRUCTURE
     
     LinearDataSet = []
@@ -170,10 +223,10 @@ def main():
     
     #### SINCE WE ARE USING A SUPERVISED LEARNING MODEL, WE WILL BE 
     #### USING TRAINING DATA AND TESTING DATA SPLITS
-    
-    
     from sklearn.cross_validation import train_test_split
+        
     
+
     ##### SET THE TRAINING SIZE TO 80% which will be 0.8 
     ##### SO THE TEST SIZE WILL BE 1 - 0.8 = 0.2 ( 20% ) TO USE
     

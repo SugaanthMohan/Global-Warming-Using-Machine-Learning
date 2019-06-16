@@ -223,10 +223,10 @@ def main():
     
     #### SINCE WE ARE USING A SUPERVISED LEARNING MODEL, WE WILL BE 
     #### USING TRAINING DATA AND TESTING DATA SPLITS
-    
-    
     from sklearn.cross_validation import train_test_split
+        
     
+
     ##### SET THE TRAINING SIZE TO 80% which will be 0.8 
     ##### SO THE TEST SIZE WILL BE 1 - 0.8 = 0.2 ( 20% ) TO USE
     

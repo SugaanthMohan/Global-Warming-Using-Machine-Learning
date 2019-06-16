@@ -25,4 +25,14 @@
 	#### USED FOR CREATING A TIME SERIES ON THE DATES
 	from datetime import datetime
 	
+	##### CONVERT THE TIME SERIES INTO LABELED VARIABLES
+    	from sklearn.preprocessing import LabelEncoder
+    	
+	#### SINCE WE ARE USING A SUPERVISED LEARNING MODEL, WE WILL BE 
+	#### USING TRAINING DATA AND TESTING DATA SPLITS
+	from sklearn.cross_validation import train_test_split
+        
+	#### USE LINEAR MODEL HERE (FOR NOW TO TEST)
+	from sklearn.linear_model import LinearRegression
+
 

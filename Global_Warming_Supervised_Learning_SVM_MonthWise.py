@@ -185,19 +185,27 @@ def CreateLinearDataset(Dataset_):
     # SORT THE DATAFRAME ACCORDING TO THE DATE FIELD, SINCE DICTIONARY LOSES ORDER AND RESET INDEX
     return pd.DataFrame(LinearDataSet)[['Date','Celcius']].sort_values('Date').reset_index(drop = True)
     
-    
-        
+
+
 
 def main():
     
     
+    
+    
     # >>>>>>> PREPROCESSING PART
+ 
+    
     
     #### GET THE DATASOURCE
     Weatheria = GetDataSource('YEAR','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC')
 
+    
+    
     #### CONVERT THE MULTI DIMENSIONAL TABLE INTO MONTHLY FACTOR ENTRIES FOR OBSERVATION PURPOSES
     LinearDataSet = CreateLinearDataset(Dataset_ = Weatheria)
+    
+   
     
     
     # ADDING A SEASONAL PARAMETER 
@@ -207,6 +215,9 @@ def main():
     LinearDataSet = LinearDataSet[ LinearDataSet['Date'].astype(str).str.contains('-05-',regex = True)]
     
     
+                                  
+                                  
+                                  
     #### SPLIT THE INDEPENDENT AND DEPENDENT VARIABLES
     
     ##### INDEPENDENT VARS
@@ -216,6 +227,10 @@ def main():
     dependent_vars   = LinearDataSet.iloc[:,1:2].values
     
 
+
+
+
+
     #### CONVERT THE DATA HERE
     
     ##### CONVERT THE TIME SERIES INTO LABELED VARIABLES
@@ -224,26 +239,37 @@ def main():
     independent_LE = LabelEncoder()
 
     independent_vars = independent_LE.fit_transform(independent_vars[:,0])
+
+
+
+
     
     
+
     ###### RESHAPE THE INDEPENDENT VAR OF 1D ARRAY TO MATRIX TYPE HERE
     independent_vars = independent_vars.reshape((independent_vars.size,1))
-    
+
     #### SINCE WE ARE USING A SUPERVISED LEARNING MODEL, WE WILL BE 
     #### USING TRAINING DATA AND TESTING DATA SPLITS
     from sklearn.cross_validation import train_test_split
-        
-    
 
     ##### SET THE TRAINING SIZE TO 80% which will be 0.8 
     ##### SO THE TEST SIZE WILL BE 1 - 0.8 = 0.2 ( 20% ) TO USE
-    
+
     independent_train,independent_test,dependent_train,dependent_test = train_test_split(
                                                                         independent_vars,
                                                                         dependent_vars,
                                                                         test_size = 0.2,
                                                                         random_state = 0)
 
+
+
+
+    
+    
+    
+    
+    
         
     # >>>>>>>> USE YOUR MODEL HERE
     
@@ -263,17 +289,38 @@ def main():
     
     
     # >>>>>>>> CALCULATE THE PERFORMANCES OF YOUR MODEL
+    #### MEAN ABSOLUTE ERROR CALCULATION
     from sklearn.metrics import mean_absolute_error
     
     total_mae = mean_absolute_error(dependent_test,dependent_pred)
+
+    print("Mean Absolute Error = ",total_mae)
     
+    #### CALCULATE THE MEAN SQUARRED ERROR
+    from sklearn.metrics import mean_squared_error
     
+    total_mse = mean_squared_error(dependent_test,dependent_pred)
+
+    print(" Mean Squarred Error = ",total_mse)
+    
+    ##### CALCULATE THE R^2 SCORE
+    
+    from sklearn.metrics import r2_score
+    
+    total_r2s = r2_score(dependent_test,dependent_pred)
+
+    print("Best possible score for R^2 is 1.0 and it can be negative (because the model can be arbitrarily worse).\n The total R Squarred Score is ",total_r2s)
+
+
+
+
+
     # >>>>>>>> PLOT THE GRAPH OF YOUR MODEL HERE WITH THE TRAINING SET
-    
+
     ##### VISUALIZE THE TRAINING MODEL RESULTS HERE
     # Visualising the Training set results
     plt.scatter(independent_train, dependent_train, color = 'red')
-    plt.plot(independent_train, regressor.predict(independent_train), color = 'blue')
+    plt.scatter(independent_train, regressor.predict(independent_train), color = 'blue')
     plt.title('Date vs Temperature (Training set)')
     plt.xlabel('DATE')
     plt.ylabel('TEMPERATURE')
@@ -285,7 +332,7 @@ def main():
     ##### VISUALIZE THE TRAINING MODEL RESULTS HERE
     # Visualising the Training set results
     plt.scatter(independent_test, dependent_test, color = 'red')
-    plt.plot(independent_test, dependent_pred, color = 'blue')
+    plt.scatter(independent_test, dependent_pred, color = 'blue')
     plt.title('Date vs Temperature (Test set)')
     plt.xlabel('DATE')
     plt.ylabel('TEMPERATURE')
